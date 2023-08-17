@@ -1,4 +1,10 @@
 module.exports = {
   root: true,
   extends: '@react-native',
+  rules: {
+    quotes: "off",
+    "prettier/prettier": 'off',
+    "comma-dangle": 'off',
+    "react/react-in-jsx-scope":"off"
+  },
 };
