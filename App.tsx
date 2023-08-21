@@ -1,34 +1,47 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {LogBox} from 'react-native';
+import {useColorScheme, LogBox} from 'react-native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+
+import {createDrawerNavigator} from '@react-navigation/drawer';
+
+import 'react-native-gesture-handler';
 
 import theme from 'src/theme';
 
 import Home from 'src/pages/home';
+import Sets from 'src/pages/sets';
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+// 忽略报错
 LogBox.ignoreAllLogs();
 
 export default function App() {
+  const color = useColorScheme();
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="home">
-        <Stack.Screen
+    <NavigationContainer
+      theme={{
+        dark: color === 'dark',
+        colors: {
+          ...DefaultTheme.colors,
+          primary: theme.primary,
+        },
+      }}>
+      <Drawer.Navigator initialRouteName="home">
+        <Drawer.Screen
           name="home"
           component={Home}
           options={{
             title: '生日列表',
-            headerTitleAlign: 'center',
-            headerTitleStyle: {
-              color: theme.white,
-              fontWeight: 'bold',
-            },
-            headerStyle: {
-              backgroundColor: theme.primary,
-            },
           }}
         />
-      </Stack.Navigator>
+        <Drawer.Screen
+          name="sets"
+          component={Sets}
+          options={{
+            title: '设置',
+          }}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
