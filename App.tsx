@@ -5,10 +5,10 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import 'react-native-gesture-handler';
 
-import theme from 'src/theme';
-
 import Home from 'src/pages/home';
 import Sets from 'src/pages/sets';
+
+import DrawerContent from 'src/components/drawer-content';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,10 +23,10 @@ export default function App() {
         dark: color === 'dark',
         colors: {
           ...DefaultTheme.colors,
-          primary: theme.primary,
+          primary: '#058ce5',
         },
       }}>
-      <Drawer.Navigator initialRouteName="home">
+      <Drawer.Navigator initialRouteName="home" drawerContent={DrawerContent}>
         <Drawer.Screen
           name="home"
           component={Home}
