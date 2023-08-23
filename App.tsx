@@ -1,14 +1,16 @@
-import {useColorScheme, LogBox} from 'react-native';
+import 'react-native-gesture-handler';
+
+import {useColorScheme, LogBox, StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import {useContext} from 'react';
 
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import 'react-native-gesture-handler';
-
+import Theme from 'src/context/theme';
 import Home from 'src/pages/home';
 import Sets from 'src/pages/sets';
 
-import DrawerContent from 'src/components/drawer-content';
+// import DrawerContent from 'src/components/drawer-content';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,31 +19,40 @@ LogBox.ignoreAllLogs();
 
 export default function App() {
   const color = useColorScheme();
+  const theme = useContext(Theme);
+
   return (
-    <NavigationContainer
-      theme={{
-        dark: color === 'dark',
-        colors: {
-          ...DefaultTheme.colors,
-          primary: '#058ce5',
-        },
-      }}>
-      <Drawer.Navigator initialRouteName="home" drawerContent={DrawerContent}>
-        <Drawer.Screen
-          name="home"
-          component={Home}
-          options={{
-            title: '生日列表',
-          }}
-        />
-        <Drawer.Screen
-          name="sets"
-          component={Sets}
-          options={{
-            title: '设置',
-          }}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <Theme.Provider value={theme}>
+      <StatusBar
+        animated
+        barStyle={color === 'dark' ? 'light-content' : 'dark-content'}
+        backgroundColor="#fff"
+      />
+      <NavigationContainer
+        theme={{
+          dark: color === 'dark',
+          colors: {
+            ...DefaultTheme.colors,
+            primary: '#058ce5',
+          },
+        }}>
+        <Drawer.Navigator initialRouteName="home">
+          <Drawer.Screen
+            name="home"
+            component={Home}
+            options={{
+              title: '生日列表',
+            }}
+          />
+          <Drawer.Screen
+            name="sets"
+            component={Sets}
+            options={{
+              title: '设置',
+            }}
+          />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </Theme.Provider>
   );
 }

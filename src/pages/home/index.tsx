@@ -1,18 +1,20 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Text, View, StatusBar} from 'react-native';
 
-export default function (props: any) {
-  console.log(props);
+import List from 'src/components/list';
 
-  useEffect(() => {
-    props.navigation.openDrawer();
-  }, []);
+export default function () {
 
   return (
     <>
       <StatusBar translucent />
       <View>
         <Text>hom2323e</Text>
+        <List action={<Text>123</Text>}>
+          <View>
+            <Text>1231</Text>
+          </View>
+        </List>
       </View>
     </>
   );
