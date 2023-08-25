@@ -18,10 +18,11 @@ const comStyle = StyleSheet.create({
   ct: {backgroundColor: '#fff'},
   children: {
     width: '100%',
-
+    backgroundColor: '#444',
     padding: 20,
+    zIndex: 1
   },
-  action: {},
+  action: {backgroundColor: '#f40',position:'absolute',right:0,top:0,height:'100%'},
 });
 
 export default function (props: ListProps) {
@@ -30,40 +31,38 @@ export default function (props: ListProps) {
 
   const panSponder = PanResponder.create({
     // 要求成为响应者：
-    onStartShouldSetPanResponder: (evt, gestureState) => {
-      console.log(evt, gestureState);
-      return true;
-    },
-    onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-    onMoveShouldSetPanResponder: (evt, gestureState) => true,
-    onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
-    onPanResponderGrant: (evt, gestureState) => {
+    onStartShouldSetPanResponder: () => true,
+    onStartShouldSetPanResponderCapture: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponderCapture: () => true,
+    onPanResponderGrant: () => {
       // 开始手势操作。给用户一些视觉反馈，让他们知道发生了什么事情！
       // gestureState.{x,y} 现在会被设置为0
-      console.log('开始操作', evt, gestureState);
     },
     onPanResponderMove: (evt, gestureState) => {
       // 最近一次的移动距离为gestureState.move{X,Y}
       // 从成为响应者开始时的累计手势移动距离为gestureState.d{x,y}
-      console.log(gestureState.dx);
       translateX.current.setValue(gestureState.dx);
     },
-    onPanResponderTerminationRequest: (evt, gestureState) => true,
-    onPanResponderRelease: (evt, gestureState) => {
+    onPanResponderTerminationRequest: () => true,
+    onPanResponderRelease: () => {
       // 用户放开了所有的触摸点，且此时视图已经成为了响应者。
       // 一般来说这意味着一个手势操作已经成功完成。
-      translateX.current.setValue(0);
+      Animated.timing(translateX.current, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
     },
-    onPanResponderTerminate: (evt, gestureState) => {
+    onPanResponderTerminate: () => {
       // 另一个组件已经成为了新的响应者，所以当前手势将被取消。
-      translateX.current.setValue(0);
+      Animated.timing(translateX.current, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
     },
-    onShouldBlockNativeResponder: (evt, gestureState) => {
-      // 返回一个布尔值，决定当前组件是否应该阻止原生组件成为JS响应者
-      // 默认返回true。目前暂时只支持android。
-      return true;
-    },
+    onShouldBlockNativeResponder: () => true,
   });
 
   return (

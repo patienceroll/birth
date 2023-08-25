@@ -1,5 +1,3 @@
-import 'react-native-gesture-handler';
-
 import {useColorScheme, LogBox, StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {useContext} from 'react';
@@ -15,10 +13,10 @@ import Sets from 'src/pages/sets';
 const Drawer = createDrawerNavigator();
 
 // 忽略报错
-LogBox.ignoreAllLogs();
+// LogBox.ignoreAllLogs();
 
 export default function App() {
-  const color = useColorScheme();
+  const color = 'dark';
   const theme = useContext(Theme);
 
   return (
@@ -26,9 +24,9 @@ export default function App() {
       <StatusBar
         animated
         barStyle={color === 'dark' ? 'light-content' : 'dark-content'}
-        backgroundColor="#fff"
       />
       <NavigationContainer
+      documentTitle={}
         theme={{
           dark: color === 'dark',
           colors: {
