@@ -6,6 +6,7 @@ module.exports = {
     "prettier/prettier": 'off',
     "comma-dangle": 'off',
     "react/react-in-jsx-scope":"off",
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "react-hooks/rules-of-hooks": "warn"
   },
 };

@@ -5,7 +5,9 @@ import {
   ViewProps,
   PanResponder,
 } from 'react-native';
-import {ReactElement, useRef} from 'react';
+import {ReactElement, useContext, useRef} from 'react';
+
+import Theme from 'src/context/theme';
 
 export type ListProps = {
   children: ReactElement;
@@ -15,19 +17,27 @@ export type ListProps = {
 };
 
 const comStyle = StyleSheet.create({
-  ct: {backgroundColor: '#fff'},
+  ct: {},
   children: {
     width: '100%',
-    backgroundColor: '#444',
     padding: 20,
-    zIndex: 1
+    zIndex: 1,
   },
-  action: {backgroundColor: '#f40',position:'absolute',right:0,top:0,height:'100%'},
+  action: {
+    backgroundColor: '#f40',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    height: '100%',
+  },
 });
 
 export default function (props: ListProps) {
   const {children, action, style = {}, childrenStyle = {}} = props;
+
   const translateX = useRef(new Animated.Value(0));
+
+  const theme = useContext(Theme);
 
   const panSponder = PanResponder.create({
     // 要求成为响应者：
@@ -42,7 +52,10 @@ export default function (props: ListProps) {
     onPanResponderMove: (evt, gestureState) => {
       // 最近一次的移动距离为gestureState.move{X,Y}
       // 从成为响应者开始时的累计手势移动距离为gestureState.d{x,y}
-      translateX.current.setValue(gestureState.dx);
+      const {dx} = gestureState;
+      if (dx < 0) {
+        translateX.current.setValue(gestureState.dx);
+      }
     },
     onPanResponderTerminationRequest: () => true,
     onPanResponderRelease: () => {
@@ -64,12 +77,12 @@ export default function (props: ListProps) {
     },
     onShouldBlockNativeResponder: () => true,
   });
-
   return (
-    <View style={[comStyle.ct, style]}>
+    <View style={[comStyle.ct, theme.backgroundColor, style]}>
       <Animated.View
         style={[
           comStyle.children,
+          theme.backgroundColor,
           childrenStyle,
           {
             transform: [
