@@ -11,7 +11,6 @@ export default function () {
     <>
       <StatusBar translucent />
       <View>
-        <Text>hom2323e</Text>
         <List action={<Text>123</Text>}>
           <View style={theme.backgroundColor}>
             <Text style={theme.color}>1231</Text>
