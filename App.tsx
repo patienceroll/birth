@@ -18,17 +18,12 @@ import {
   createDrawerNavigator,
   DrawerToggleButton,
   DrawerNavigationOptions,
-  DrawerContentComponentProps,
-  DrawerContentScrollView,
 } from '@react-navigation/drawer';
 
 import Theme, {darkTheme, defaultTheme} from 'src/context/theme';
-import Home from 'src/pages/home';
+import Birth from 'src/pages/birth';
 import Sets from 'src/pages/sets';
-import theme from 'src/context/theme';
 import useIsDark from 'src/hooks/use-is-dark';
-
-// import DrawerContent from 'src/components/drawer-content';
 
 const Drawer = createDrawerNavigator();
 
@@ -46,14 +41,14 @@ function headerLeft(
   return <DrawerToggleButton {...props} />;
 }
 
-function DrawerIcon(type: 'home' | 'sets') {
+function DrawerIcon(type: 'birth' | 'sets') {
   return function (
     props: Parameters<NonNullable<DrawerNavigationOptions['drawerIcon']>>[0],
   ) {
     const isDark = useIsDark();
 
     const store: Record<typeof type, ImageSourcePropType> = {
-      home: isDark
+      birth: isDark
         ? require('src/assets/1.dark.png')
         : require('src/assets/1.png'),
       sets: isDark
@@ -85,7 +80,7 @@ export default function App() {
           colors: isDark ? DarkTheme.colors : DefaultTheme.colors,
         }}>
         <Drawer.Navigator
-          initialRouteName="home"
+          initialRouteName="birth"
           screenOptions={{
             headerLeft,
             drawerActiveTintColor: isDark
@@ -93,11 +88,11 @@ export default function App() {
               : defaultTheme.color.color?.toString(),
           }}>
           <Drawer.Screen
-            name="home"
-            component={Home}
+            name="birth"
+            component={Birth}
             options={{
               title: '生日列表',
-              drawerIcon: DrawerIcon('home'),
+              drawerIcon: DrawerIcon('birth'),
             }}
           />
           <Drawer.Screen
