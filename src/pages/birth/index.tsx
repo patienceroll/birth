@@ -1,21 +1,36 @@
-import React, {useContext} from 'react';
-import {Text, View, StatusBar} from 'react-native';
+import React from 'react';
+import {Text, View, StatusBar, FlatList, Image} from 'react-native';
 
-import Theme from 'src/context/theme';
 import List from 'src/components/list';
+import ListAction from 'src/components/list/action';
+import useBirth from 'src/hooks/use-birth';
+import useTheme from 'src/hooks/use-theme';
+import baseStyle from 'src/base-style';
+import assets from 'src/assets';
 
 export default function () {
-  const theme = useContext(Theme);
-
+  const theme = useTheme();
+  const birth = useBirth();
   return (
     <>
       <StatusBar translucent />
       <View>
-        <List action={<Text>123</Text>}>
-          <View style={theme.backgroundColor}>
-            <Text style={theme.color}>1231</Text>
-          </View>
-        </List>
+        <FlatList<BirthItem>
+          data={birth.list}
+          renderItem={row => (
+            <List
+              key={row.item.id}
+              action={
+                <ListAction style={[{backgroundColor:theme.danger.color}]}>
+                  <Image style={{width: 20, height: 20}} source={assets[3]} />
+                </ListAction>
+              }>
+              <View style={theme.backgroundColor}>
+                <Text style={theme.color}>{row.item.name}</Text>
+              </View>
+            </List>
+          )}
+        />
       </View>
     </>
   );

@@ -5,6 +5,8 @@ import {
   ViewProps,
   PanResponder,
   LayoutRectangle,
+  GestureResponderEvent,
+  PanResponderGestureState,
 } from 'react-native';
 import {ReactElement, useContext, useRef} from 'react';
 
@@ -25,7 +27,6 @@ const comStyle = StyleSheet.create({
     zIndex: 1,
   },
   action: {
-    backgroundColor: '#f40',
     position: 'absolute',
     right: 0,
     top: 0,
@@ -47,45 +48,50 @@ export default function (props: ListProps) {
 
   const theme = useContext(Theme);
 
+  function onStopSwipe(
+    e: GestureResponderEvent,
+    gestureState: PanResponderGestureState,
+  ) {
+    const {dx} = gestureState;
+    if (
+      dx < 0 &&
+      Math.abs(dx) > actionLayout.current.width &&
+      !showAction.current
+    ) {
+      showAction.current = true;
+    }
+
+    if (dx > 0 && showAction.current) {
+      showAction.current = false;
+    }
+
+    Animated.timing(translateX.current, {
+      toValue: showAction.current ? -actionLayout.current.width : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }
+
   const panSponder = PanResponder.create({
     // 要求成为响应者：
     onStartShouldSetPanResponder: () => true,
     onStartShouldSetPanResponderCapture: () => true,
     onMoveShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponderCapture: () => true,
-    onPanResponderGrant: () => {
-      // 开始手势操作。给用户一些视觉反馈，让他们知道发生了什么事情！
-      // gestureState.{x,y} 现在会被设置为0
-    },
+    onPanResponderGrant: () => {},
     onPanResponderMove: (_, gestureState) => {
       // 最近一次的移动距离为gestureState.move{X,Y}
       // 从成为响应者开始时的累计手势移动距离为gestureState.d{x,y}
       const {dx} = gestureState;
       if (dx < 0) {
-        showAction.current = true;
-        translateX.current.setValue(dx);
-      } else {
-        showAction.current = false;
+        translateX.current.setValue(
+          showAction.current ? dx + -actionLayout.current.width : dx,
+        );
       }
     },
     onPanResponderTerminationRequest: () => true,
-    onPanResponderRelease: () => {
-      // 用户放开了所有的触摸点，且此时视图已经成为了响应者。
-      // 一般来说这意味着一个手势操作已经成功完成。
-      Animated.timing(translateX.current, {
-        toValue: showAction.current ? -actionLayout.current.width : 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    },
-    onPanResponderTerminate: () => {
-      // 另一个组件已经成为了新的响应者，所以当前手势将被取消。
-      Animated.timing(translateX.current, {
-        toValue: showAction.current ? -actionLayout.current.width : 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    },
+    onPanResponderRelease: onStopSwipe,
+    onPanResponderTerminate: onStopSwipe,
     onShouldBlockNativeResponder: () => true,
   });
 

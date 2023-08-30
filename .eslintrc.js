@@ -5,8 +5,9 @@ module.exports = {
     quotes: "off",
     "prettier/prettier": 'off',
     "comma-dangle": 'off',
-    "react/react-in-jsx-scope":"off",
+    "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unused-vars": "warn",
-    "react-hooks/rules-of-hooks": "warn"
+    "react-hooks/rules-of-hooks": "warn",
+    "curly": "off"
   },
 };
