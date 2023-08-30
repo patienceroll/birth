@@ -107,18 +107,6 @@ export default function AppLazy() {
         React.lazy(() =>
           AsyncStorage.getItem('list').then(res => {
             const list = (res ? JSON.parse(res) : []) as BirthItem[];
-            list.push({
-              name: '张显磊',
-              id: '12',
-              birthDay: 1693376281993,
-              birthLunar: 1693376281993,
-            });
-            list.push({
-              name: '李若和',
-              id: '13',
-              birthDay: 1693376281993,
-              birthLunar: 1693376281993,
-            });
             return {
               // eslint-disable-next-line react/no-unstable-nested-components
               default: () => <App list={list} />,

@@ -16,14 +16,14 @@ export type ListProps = {
   children: ReactElement;
   action: ReactElement;
   style?: ViewProps['style'];
-  childrenStyle?: ViewProps['style'];
+  /** 包含滑块和action的容器style */
+  wrapperStyle?: ViewProps['style'];
 };
 
 const comStyle = StyleSheet.create({
   ct: {},
   children: {
     width: '100%',
-    padding: 20,
     zIndex: 1,
   },
   action: {
@@ -35,7 +35,7 @@ const comStyle = StyleSheet.create({
 });
 
 export default function (props: ListProps) {
-  const {children, action, style = {}, childrenStyle = {}} = props;
+  const {children, action, style = {}, wrapperStyle = {}} = props;
 
   const translateX = useRef(new Animated.Value(0));
   const actionLayout = useRef<LayoutRectangle>({
@@ -96,12 +96,12 @@ export default function (props: ListProps) {
   });
 
   return (
-    <View style={[comStyle.ct, theme.backgroundColor, style]}>
+    <View style={[comStyle.ct, theme.backgroundColor, wrapperStyle]}>
       <Animated.View
         style={[
           comStyle.children,
           theme.backgroundColor,
-          childrenStyle,
+          style,
           {
             transform: [
               {

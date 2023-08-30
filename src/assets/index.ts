@@ -15,4 +15,10 @@ export default {
   get 3() {
     return require('./3.png');
   },
+  get 4() {
+    return require('./4.png');
+  },
+  get 5() {
+    return require('./5.png');
+  },
 };
