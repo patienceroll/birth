@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StatusBar, FlatList, Image, StyleSheet} from 'react-native';
+import {Text, View, FlatList, Image, StyleSheet, Alert} from 'react-native';
 
 import List from 'src/components/list';
 import ListAction from 'src/components/list/action';
@@ -16,6 +16,19 @@ const style = StyleSheet.create({
 export default function () {
   const theme = useTheme();
   const birth = useBirth();
+
+  function onDelete(item: BirthItem) {
+    return function () {
+      Alert.alert('删除生日', `确定删除${item.name}的生日吗?`, [
+        {text: '取消'},
+        {
+          text: '确定',
+          onPress() {},
+        },
+      ]);
+    };
+  }
+
   return (
     <>
       <View style={baseStyle.height100}>
@@ -26,7 +39,9 @@ export default function () {
             <List
               key={row.item.id}
               action={
-                <ListAction style={[{backgroundColor: theme.danger.color}]}>
+                <ListAction
+                  onPress={onDelete(row.item)}
+                  style={[{backgroundColor: theme.danger.color}]}>
                   <Image style={style.action} source={assets[3]} />
                 </ListAction>
               }>

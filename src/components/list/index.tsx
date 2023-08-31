@@ -11,6 +11,7 @@ import {
 import {ReactElement, useContext, useRef} from 'react';
 
 import Theme from 'src/context/theme';
+import useOutsidePress from 'src/hooks/use-outside-press';
 
 export type ListProps = {
   children: ReactElement;
@@ -47,6 +48,14 @@ export default function (props: ListProps) {
   const showAction = useRef(false);
 
   const theme = useContext(Theme);
+  const {onTouchStart, onTouchEnd} = useOutsidePress(() => {
+    showAction.current = false;
+    Animated.timing(translateX.current, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  });
 
   function onStopSwipe(
     e: GestureResponderEvent,
@@ -75,6 +84,7 @@ export default function (props: ListProps) {
   const panSponder = PanResponder.create({
     // 要求成为响应者：
     onStartShouldSetPanResponder: () => true,
+    /** 是否捕获子元素事件(拦截) */
     onStartShouldSetPanResponderCapture: () => true,
     onMoveShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponderCapture: () => true,
@@ -96,7 +106,10 @@ export default function (props: ListProps) {
   });
 
   return (
-    <View style={[comStyle.ct, theme.backgroundColor, wrapperStyle]}>
+    <View
+      style={[comStyle.ct, theme.backgroundColor, wrapperStyle]}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}>
       <Animated.View
         style={[
           comStyle.children,

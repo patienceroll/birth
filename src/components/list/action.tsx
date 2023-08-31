@@ -1,5 +1,6 @@
 import React, {ReactElement} from 'react';
 import {
+  GestureResponderEvent,
   Platform,
   StyleProp,
   TouchableNativeFeedback,
@@ -13,13 +14,14 @@ import baseStyle from 'src/base-style';
 export type ListActionProps = {
   children: ReactElement;
   style?: StyleProp<ViewStyle>;
+  onPress?: (event: GestureResponderEvent) => void;
 };
 
 export default function (props: ListActionProps) {
-  const {children, style} = props;
+  const {children, style, onPress} = props;
   if (Platform.OS === 'android')
     return (
-      <TouchableNativeFeedback>
+      <TouchableNativeFeedback onPress={onPress}>
         <View
           style={[
             baseStyle.height100,
@@ -34,7 +36,7 @@ export default function (props: ListActionProps) {
     );
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View
         style={[
           baseStyle.height100,

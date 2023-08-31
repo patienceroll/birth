@@ -1,4 +1,10 @@
-import {LogBox, StatusBar, Image, ImageSourcePropType} from 'react-native';
+import {
+  LogBox,
+  StatusBar,
+  Image,
+  ImageSourcePropType,
+  View,
+} from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme,
@@ -13,11 +19,13 @@ import {
 } from '@react-navigation/drawer';
 
 import Theme, {darkTheme, defaultTheme} from 'src/context/theme';
+import OutSideContext from 'src/context/outside-press';
 import BirthCtx from 'src/context/birth';
 import Birth from 'src/pages/birth';
 import Sets from 'src/pages/sets';
 import useIsDark from 'src/hooks/use-is-dark';
 import assets from 'src/assets';
+import baseStyle from 'src/base-style';
 
 const Drawer = createDrawerNavigator();
 
@@ -56,47 +64,60 @@ function DrawerIcon(type: 'birth' | 'sets') {
 function App(props: {list: BirthItem[]}) {
   const isDark = useIsDark();
   const [list, setList] = useState(() => props.list);
+  const outSideContext = useContext(OutSideContext);
+
+  function onOutSideTounchStart() {
+    outSideContext.eventStore.forEach(item => {
+      if (!item.disabled && !outSideContext.skipIds.has(item.id)) {
+        item.onOutsidePress();
+      }
+    });
+  }
 
   return (
-    <BirthCtx.Provider value={{list, setList}}>
-      <Theme.Provider value={isDark ? darkTheme : defaultTheme}>
-        <StatusBar
-          animated
-          barStyle={isDark ? 'light-content' : 'dark-content'}
-        />
-        <NavigationContainer
-          theme={{
-            dark: isDark,
-            colors: isDark ? DarkTheme.colors : DefaultTheme.colors,
-          }}>
-          <Drawer.Navigator
-            initialRouteName="birth"
-            screenOptions={{
-              headerLeft,
-              drawerActiveTintColor: isDark
-                ? darkTheme.color.color?.toString()
-                : defaultTheme.color.color?.toString(),
-            }}>
-            <Drawer.Screen
-              name="birth"
-              component={Birth}
-              options={{
-                title: '生日列表',
-                drawerIcon: DrawerIcon('birth'),
-              }}
+    <Theme.Provider value={isDark ? darkTheme : defaultTheme}>
+      <OutSideContext.Provider value={outSideContext}>
+        <BirthCtx.Provider value={{list, setList}}>
+          <View style={baseStyle.flex1} onTouchStart={onOutSideTounchStart}>
+            <StatusBar
+              animated
+              barStyle={isDark ? 'light-content' : 'dark-content'}
             />
-            <Drawer.Screen
-              name="sets"
-              component={Sets}
-              options={{
-                title: '设置',
-                drawerIcon: DrawerIcon('sets'),
-              }}
-            />
-          </Drawer.Navigator>
-        </NavigationContainer>
-      </Theme.Provider>
-    </BirthCtx.Provider>
+            <NavigationContainer
+              theme={{
+                dark: isDark,
+                colors: isDark ? DarkTheme.colors : DefaultTheme.colors,
+              }}>
+              <Drawer.Navigator
+                initialRouteName="birth"
+                screenOptions={{
+                  headerLeft,
+                  drawerActiveTintColor: isDark
+                    ? darkTheme.color.color?.toString()
+                    : defaultTheme.color.color?.toString(),
+                }}>
+                <Drawer.Screen
+                  name="birth"
+                  component={Birth}
+                  options={{
+                    title: '生日列表',
+                    drawerIcon: DrawerIcon('birth'),
+                  }}
+                />
+                <Drawer.Screen
+                  name="sets"
+                  component={Sets}
+                  options={{
+                    title: '设置',
+                    drawerIcon: DrawerIcon('sets'),
+                  }}
+                />
+              </Drawer.Navigator>
+            </NavigationContainer>
+          </View>
+        </BirthCtx.Provider>
+      </OutSideContext.Provider>
+    </Theme.Provider>
   );
 }
 
