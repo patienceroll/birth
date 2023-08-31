@@ -23,4 +23,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  borderBottom: {
+    borderColor: '#dadada',
+    borderBottomWidth: 1,
+  },
 });

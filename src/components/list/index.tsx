@@ -25,7 +25,7 @@ const comStyle = StyleSheet.create({
   ct: {},
   children: {
     width: '100%',
-    zIndex: 1,
+    zIndex: 1
   },
   action: {
     position: 'absolute',

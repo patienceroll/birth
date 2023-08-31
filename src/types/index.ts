@@ -6,3 +6,5 @@ type BirthItem = {
   /** 农历生日 */
   birthLunar?: number;
 };
+
+type RequiredPick<T, K extends keyof T> = Required<Pick<T, K>>;

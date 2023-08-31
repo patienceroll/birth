@@ -21,4 +21,7 @@ export default {
   get 5() {
     return require('./5.png');
   },
+  get 6() {
+    return require('./6.png');
+  },
 };
