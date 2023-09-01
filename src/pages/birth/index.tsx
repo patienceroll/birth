@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, View, FlatList, Image, StyleSheet, Alert} from 'react-native';
+import {DrawerScreenProps} from '@react-navigation/drawer';
 
 import List from 'src/components/list';
 import ListAction from 'src/components/list/action';
@@ -7,6 +8,7 @@ import useBirth from 'src/hooks/use-birth';
 import useTheme from 'src/hooks/use-theme';
 import baseStyle from 'src/base-style';
 import assets from 'src/assets';
+import RouteNames from 'src/route';
 
 const style = StyleSheet.create({
   action: {width: 20, height: 20},
@@ -15,7 +17,12 @@ const style = StyleSheet.create({
   content: {},
 });
 
-export default function () {
+export default function (
+  props: DrawerScreenProps<
+    Record<keyof typeof RouteNames, BirthItem>,
+    keyof typeof RouteNames
+  >,
+) {
   const theme = useTheme();
   const birth = useBirth();
 
@@ -31,6 +38,12 @@ export default function () {
     };
   }
 
+  function onEdit(item: BirthItem) {
+    return function () {
+      props.navigation.navigate(RouteNames.birthModify, item);
+    };
+  }
+
   return (
     <>
       <View style={[baseStyle.flex1, theme.backgroundColor]}>
@@ -43,7 +56,7 @@ export default function () {
               action={
                 <View style={[baseStyle.flexDirectionRow]}>
                   <ListAction
-                    onPress={onDelete(row.item)}
+                    onPress={onEdit(row.item)}
                     style={[{backgroundColor: theme.blue.color}]}>
                     <Image style={style.action} source={assets[6]} />
                   </ListAction>

@@ -1,10 +1,4 @@
-import {
-  LogBox,
-  StatusBar,
-  Image,
-  ImageSourcePropType,
-  View,
-} from 'react-native';
+import {LogBox, StatusBar, View} from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme,
@@ -12,54 +6,24 @@ import {
 } from '@react-navigation/native';
 import React, {useContext, Suspense, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  createDrawerNavigator,
-  DrawerToggleButton,
-  DrawerNavigationOptions,
-} from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import Theme, {darkTheme, defaultTheme} from 'src/context/theme';
 import OutSideContext from 'src/context/outside-press';
 import BirthCtx from 'src/context/birth';
+import useIsDark from 'src/hooks/use-is-dark';
+import baseStyle from 'src/base-style';
+import * as DrawerLayout from 'src/drawer-layout';
+import RouteNames, {RouteName} from 'src/route';
+
 import Birth from 'src/pages/birth';
 import Sets from 'src/pages/sets';
-import useIsDark from 'src/hooks/use-is-dark';
-import assets from 'src/assets';
-import baseStyle from 'src/base-style';
+import BirthModify from 'src/pages/birth-modify';
 
 const Drawer = createDrawerNavigator();
 
 // 忽略报错
 LogBox.ignoreAllLogs();
-
-function headerLeft(
-  ...arg: Parameters<NonNullable<DrawerNavigationOptions['headerLeft']>>
-) {
-  const [props] = arg;
-  const theme = useContext(Theme);
-  if (typeof props.tintColor === 'undefined') {
-    props.tintColor = theme.color.color?.toString();
-  }
-  return <DrawerToggleButton {...props} />;
-}
-
-function DrawerIcon(type: 'birth' | 'sets') {
-  return function (
-    props: Parameters<NonNullable<DrawerNavigationOptions['drawerIcon']>>[0],
-  ) {
-    const store: Record<typeof type, ImageSourcePropType> = {
-      birth: assets[1],
-      sets: assets[2],
-    };
-
-    return (
-      <Image
-        style={{width: props.size, height: props.size}}
-        source={store[type]}
-      />
-    );
-  };
-}
 
 function App(props: {list: BirthItem[]}) {
   const isDark = useIsDark();
@@ -89,28 +53,34 @@ function App(props: {list: BirthItem[]}) {
                 colors: isDark ? DarkTheme.colors : DefaultTheme.colors,
               }}>
               <Drawer.Navigator
-                initialRouteName="birth"
+                drawerContent={DrawerLayout.DrawerContent}
+                initialRouteName={RouteNames.birth}
                 screenOptions={{
-                  headerLeft,
+                  headerLeft: DrawerLayout.HeaderLeft,
                   drawerActiveTintColor: isDark
                     ? darkTheme.color.color?.toString()
                     : defaultTheme.color.color?.toString(),
                 }}>
                 <Drawer.Screen
-                  name="birth"
-                  component={Birth}
+                  name={RouteNames.birth}
+                  component={Birth as any}
                   options={{
                     title: '生日列表',
-                    drawerIcon: DrawerIcon('birth'),
+                    drawerIcon: DrawerLayout.DrawerIcon(RouteNames.birth),
                   }}
                 />
+
                 <Drawer.Screen
-                  name="sets"
+                  name={RouteNames.sets}
                   component={Sets}
                   options={{
                     title: '设置',
-                    drawerIcon: DrawerIcon('sets'),
+                    drawerIcon: DrawerLayout.DrawerIcon(RouteNames.sets),
                   }}
+                />
+                <Drawer.Screen
+                  name={RouteNames.birthModify}
+                  component={BirthModify as any}
                 />
               </Drawer.Navigator>
             </NavigationContainer>
