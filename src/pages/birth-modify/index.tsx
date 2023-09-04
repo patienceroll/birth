@@ -1,8 +1,20 @@
 import {DrawerScreenProps} from '@react-navigation/drawer';
-import React, {useLayoutEffect,useEffect} from 'react';
-import {Text, View} from 'react-native';
+import React, {useLayoutEffect, useEffect} from 'react';
+import {Text, View, TextInput, StyleSheet} from 'react-native';
+import baseStyle from 'src/base-style';
+import useTheme from 'src/hooks/use-theme';
 
 import RouteNames from 'src/route';
+
+const style = StyleSheet.create({
+  text: {
+    paddingVertical: 5,
+    borderBottomWidth: 1,
+  },
+  view: {
+    paddingHorizontal: 20,
+  },
+});
 
 export default function (
   props: DrawerScreenProps<
@@ -11,6 +23,7 @@ export default function (
   >,
 ) {
   const {route, navigation} = props;
+  const theme = useTheme();
 
   useEffect(() => {
     navigation.setOptions({
@@ -20,7 +33,9 @@ export default function (
 
   return (
     <View>
-      <Text>123</Text>
+      <View style={style.view}>
+        <TextInput placeholder="姓名" style={[style.text, theme.borderColor]} />
+      </View>
     </View>
   );
 }
