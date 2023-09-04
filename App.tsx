@@ -3,8 +3,9 @@ import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
+  NavigationContainerRef,
 } from '@react-navigation/native';
-import React, {useContext, Suspense, useState} from 'react';
+import React, {useContext, Suspense, useState, useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
@@ -14,7 +15,7 @@ import BirthCtx from 'src/context/birth';
 import useIsDark from 'src/hooks/use-is-dark';
 import baseStyle from 'src/base-style';
 import * as DrawerLayout from 'src/drawer-layout';
-import RouteNames, {RouteName} from 'src/route';
+import RouteNames from 'src/route';
 
 import Birth from 'src/pages/birth';
 import Sets from 'src/pages/sets';
@@ -27,8 +28,13 @@ LogBox.ignoreAllLogs();
 
 function App(props: {list: BirthItem[]}) {
   const isDark = useIsDark();
-  const [list, setList] = useState(() => props.list);
   const outSideContext = useContext(OutSideContext);
+  const navigation =
+    useRef<NavigationContainerRef<Record<keyof typeof RouteNames, undefined>>>(
+      null,
+    );
+
+  const [list, setList] = useState(() => props.list);
 
   function onOutSideTounchStart() {
     outSideContext.eventStore.forEach(item => {
@@ -48,6 +54,7 @@ function App(props: {list: BirthItem[]}) {
               barStyle={isDark ? 'light-content' : 'dark-content'}
             />
             <NavigationContainer
+              ref={navigation}
               theme={{
                 dark: isDark,
                 colors: isDark ? DarkTheme.colors : DefaultTheme.colors,
@@ -67,6 +74,11 @@ function App(props: {list: BirthItem[]}) {
                   options={{
                     title: '生日列表',
                     drawerIcon: DrawerLayout.DrawerIcon(RouteNames.birth),
+                    headerRight: DrawerLayout.HeaderRight({
+                      onPress() {
+                        navigation.current?.navigate(RouteNames.birthModify);
+                      },
+                    }),
                   }}
                 />
 

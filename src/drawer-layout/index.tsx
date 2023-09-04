@@ -6,7 +6,16 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import {useContext} from 'react';
-import {Image, ImageSourcePropType} from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  TouchableNativeFeedback,
+  TouchableHighlight,
+  Platform,
+  View,
+  GestureResponderEvent,
+} from 'react-native';
 import {
   CommonActions,
   DrawerActions,
@@ -17,6 +26,19 @@ import Theme from 'src/context/theme';
 import assets from 'src/assets';
 import {RouteName} from 'src/route';
 
+const style = StyleSheet.create({
+  headerRight: {
+    width: 24,
+    height: 24,
+  },
+  imageWrapper: {
+    padding: 20,
+    height: '100%',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+});
+
 export function HeaderLeft(
   ...arg: Parameters<NonNullable<DrawerNavigationOptions['headerLeft']>>
 ) {
@@ -26,6 +48,28 @@ export function HeaderLeft(
     props.tintColor = theme.color.color?.toString();
   }
   return <DrawerToggleButton {...props} />;
+}
+
+export function HeaderRight(props: {
+  onPress?: (event: GestureResponderEvent) => void;
+}) {
+  return function () {
+    if (Platform.OS === 'android')
+      return (
+        <TouchableNativeFeedback onPress={props.onPress}>
+          <View style={style.imageWrapper}>
+            <Image style={style.headerRight} source={assets[7]} />
+          </View>
+        </TouchableNativeFeedback>
+      );
+    return (
+      <TouchableHighlight onPress={props.onPress}>
+        <View style={style.imageWrapper}>
+          <Image style={style.headerRight} source={assets[7]} />
+        </View>
+      </TouchableHighlight>
+    );
+  };
 }
 
 export function DrawerIcon(type: Exclude<RouteName, 'birthModify'>) {
@@ -39,7 +83,6 @@ export function DrawerIcon(type: Exclude<RouteName, 'birthModify'>) {
       birth: assets[1],
       sets: assets[2],
     };
-
     return (
       <Image
         style={{width: props.size, height: props.size}}

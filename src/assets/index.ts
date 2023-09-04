@@ -24,4 +24,7 @@ export default {
   get 6() {
     return require('./6.png');
   },
+  get 7() {
+    return generate(require('./7.png'), require('./7.dark.png'));
+  },
 };
