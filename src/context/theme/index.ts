@@ -30,3 +30,4 @@ export const darkTheme: ThemeType = {
 };
 
 export default createContext(defaultTheme);
+

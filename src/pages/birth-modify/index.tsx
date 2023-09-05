@@ -34,7 +34,11 @@ export default function (
   return (
     <View>
       <View style={style.view}>
-        <TextInput placeholder="姓名" style={[style.text, theme.borderColor]} />
+        <TextInput
+          placeholder="姓名"
+          style={[style.text, theme.borderColor]}
+          onChangeText={console.log}
+        />
       </View>
     </View>
   );
