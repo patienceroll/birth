@@ -15,6 +15,7 @@ import {
   Platform,
   View,
   GestureResponderEvent,
+
 } from 'react-native';
 import {
   CommonActions,
