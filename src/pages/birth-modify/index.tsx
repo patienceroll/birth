@@ -13,8 +13,15 @@ const style = StyleSheet.create({
     paddingVertical: 5,
     borderBottomWidth: 1,
   },
+  item: {
+    marginBottom: 20,
+  },
   view: {
     paddingHorizontal: 20,
+  },
+  label: {
+    lineHeight: 40,
+    paddingRight: 10,
   },
 });
 
@@ -37,11 +44,14 @@ export default function (
   return (
     <View>
       <View style={style.view}>
-        <TextInput
-          placeholder="姓名"
-          style={[style.text, theme.borderColor]}
-          onChangeText={console.log}
-        />
+        <View style={[baseStyle.flexDirectionRow, style.item]}>
+          <Text style={style.label}>姓名</Text>
+          <TextInput style={[style.text, theme.borderColor, baseStyle.flex1]} />
+        </View>
+        <View style={[baseStyle.flexDirectionRow, style.item]}>
+          <Text style={style.label}>生日</Text>
+          <TextInput style={[style.text, theme.borderColor, baseStyle.flex1]} />
+        </View>
       </View>
       <PickDate.default ref={pickDate} />
     </View>
