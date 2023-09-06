@@ -2,7 +2,7 @@ import {DrawerScreenProps} from '@react-navigation/drawer';
 import React, {useLayoutEffect, useEffect, useRef} from 'react';
 import {Text, View, TextInput, StyleSheet, Pressable} from 'react-native';
 
-import * as Overlay from 'src/components/overlay';
+import * as PickDate from 'src/components/pick-date';
 import baseStyle from 'src/base-style';
 import useTheme from 'src/hooks/use-theme';
 
@@ -26,8 +26,7 @@ export default function (
 ) {
   const {route, navigation} = props;
   const theme = useTheme();
-
-  const overlay = useRef<Overlay.Ref>(null);
+  const pickDate = useRef<PickDate.Ref>(null);
 
   useEffect(() => {
     navigation.setOptions({
@@ -44,33 +43,7 @@ export default function (
           onChangeText={console.log}
         />
       </View>
-
-      <Pressable
-        onPress={() => {
-          console.log('press');
-          overlay.current?.setTrue();
-        }}>
-        <View style={baseStyle.padding20}>
-          <Text>打开</Text>
-        </View>
-      </Pressable>
-
-      {/* <View
-        style={baseStyle.padding20}
-        onTouchCancel={() => {
-          console.log('onTouchCancel');
-        }}
-        onTouchStart={() => {
-          overlay.current?.setFalse();
-        }}>
-        <Text>关闭</Text>
-      </View> */}
-
-      <Overlay.default ref={overlay}>
-        <View style={[{backgroundColor: '#f40'}, baseStyle.padding20]}>
-          <Text>123</Text>
-        </View>
-      </Overlay.default>
+      <PickDate.default ref={pickDate} />
     </View>
   );
 }
