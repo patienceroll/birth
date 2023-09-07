@@ -1,14 +1,25 @@
 import {useRef, forwardRef, useImperativeHandle} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet,Text} from 'react-native';
 import baseStyle from 'src/style/base';
 
 import * as Overlay from 'src/components/overlay';
 import theme from 'src/style/theme';
+import {ScrollView} from 'react-native-gesture-handler';
+
 
 const style = StyleSheet.create({
   view: {
     flexDirection: 'row',
     height: 400,
+    width: '100%',
+    // backgroundColor: theme.backgroundColor.backgroundColor,
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0,
+
+  },
+  scrollView: {
+    flex: 1,
   },
 });
 
@@ -39,7 +50,17 @@ export default forwardRef<Ref>(function (props, ref) {
   }));
   return (
     <Overlay.default ref={overlay} onOvlayClose={overlay.current?.setFalse}>
-      <View style={[style.view, theme.backgroundColor]}></View>
+      <View style={style.view}>
+        <ScrollView style={style.scrollView}>
+          <Text>123</Text>
+        </ScrollView>
+        <ScrollView style={style.scrollView}>
+          <Text>123</Text>
+        </ScrollView>
+        <ScrollView style={style.scrollView}>
+          <Text>123</Text>
+        </ScrollView>
+      </View>
     </Overlay.default>
   );
 });

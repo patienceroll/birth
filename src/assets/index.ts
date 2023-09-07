@@ -1,7 +1,7 @@
-import {Appearance} from 'react-native';
+import isDark from 'src/utils/is-dark';
 
 function generate(base: any, dark: any) {
-  const index = Appearance.getColorScheme() === 'dark' ? 1 : 0;
+  const index = isDark() ? 1 : 0;
   return [base, dark][index];
 }
 

@@ -13,9 +13,9 @@ import {
 import * as PickDate from 'src/components/pick-date';
 import baseStyle from 'src/style/base';
 
-
 import RouteNames from 'src/route';
 import key from 'src/utils/key';
+import theme from 'src/style/theme';
 
 export default function (
   props: DrawerScreenProps<
@@ -48,44 +48,69 @@ export default function (
   return (
     <View>
       <Touch>
-        <View>
+        <View style={style.item}>
           <View style={[style.label]}>
-            <Text>姓名</Text>
+            <Text style={style.labelText}>姓名</Text>
           </View>
-          <View style={[style.content]}></View>
-        </View>
-      </Touch>
-      {/* <Touch style={style.touch}>
-        <View style={[baseStyle.flexDirectionRow, style.item]}>
-          <Text style={style.label}>姓名</Text>
-          <View style={[style.content, theme.borderColor]}>
-            <TextInput style={[style.textInput, baseStyle.flex1]} />
+          <View style={[style.content]}>
+            <TextInput
+              style={style.textInput}
+              autoComplete="name"
+              onTextInput={e => {
+                form.current.name = e.nativeEvent.text;
+              }}
+            />
           </View>
         </View>
       </Touch>
       <Touch
-        style={style.touch}
         onPress={() => {
-          pickDate.current?.getBirth();
+          pickDate.current?.getBirth().then(birth => {
+            form.current.birthType = birth.type;
+          });
         }}>
-        <View style={[baseStyle.flexDirectionRow, style.item]}>
-          <Text style={style.label}>生日</Text>
-          <View style={[style.content, theme.borderColor]}>
-            <Text>
-              {Object.is(form.current.birthDay, NaN)
-                ? ''
-                : form.current.birthDay}
-            </Text>
+        <View style={style.item}>
+          <View style={[style.label]}>
+            <Text style={style.labelText}>生日</Text>
+          </View>
+          <View style={[style.content]}>
+            <View style={style.textContent}>
+              {form.current.birthType === 'day' && (
+                <Text>{form.current.birthDay || ''}</Text>
+              )}
+              {form.current.birthType === 'lunar' && (
+                <Text>{form.current.birthLunar || ''}</Text>
+              )}
+            </View>
           </View>
         </View>
-      </Touch> */}
-
+      </Touch>
       <PickDate.default ref={pickDate} />
     </View>
   );
 }
 
 const style = StyleSheet.create({
-  label: {},
-  content: {},
+  item: {
+    flexDirection: 'row',
+  },
+  label: {
+    paddingLeft: 20,
+    paddingRight: 10,
+  },
+  labelText: {
+    lineHeight: 49,
+  },
+  content: {
+    flex: 1,
+    borderBlockColor: theme.borderColor.borderColor,
+    borderBottomWidth: 1,
+    marginRight: 10,
+  },
+  textInput: {
+    height: 49,
+  },
+  textContent: {
+    height: 49,
+  },
 });
