@@ -9,17 +9,18 @@ import React, {useContext, Suspense, useState, useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import Theme, {darkTheme, defaultTheme} from 'src/context/theme';
 import OutSideContext from 'src/context/outside-press';
 import BirthCtx from 'src/context/birth';
-import useIsDark from 'src/hooks/use-is-dark';
-import baseStyle from 'src/base-style';
+
+import baseStyle from 'src/style/base';
 import * as DrawerLayout from 'src/drawer-layout';
 import RouteNames from 'src/route';
 
 import Birth from 'src/pages/birth';
 import Sets from 'src/pages/sets';
 import BirthModify from 'src/pages/birth-modify';
+import theme from 'src/style/theme';
+import isDark from 'src/utils/is-dark';
 
 const Drawer = createDrawerNavigator();
 
@@ -27,7 +28,7 @@ const Drawer = createDrawerNavigator();
 LogBox.ignoreAllLogs();
 
 function App(props: {list: BirthItem[]}) {
-  const isDark = useIsDark();
+  const dark = isDark();
   const outSideContext = useContext(OutSideContext);
   const navigation =
     useRef<NavigationContainerRef<Record<keyof typeof RouteNames, undefined>>>(
@@ -45,61 +46,57 @@ function App(props: {list: BirthItem[]}) {
   }
 
   return (
-    <Theme.Provider value={isDark ? darkTheme : defaultTheme}>
-      <OutSideContext.Provider value={outSideContext}>
-        <BirthCtx.Provider value={{list, setList}}>
-          <View style={baseStyle.flex1} onTouchStart={onOutSideTounchStart}>
-            <StatusBar
-              animated
-              barStyle={isDark ? 'light-content' : 'dark-content'}
-            />
-            <NavigationContainer
-              ref={navigation}
-              theme={{
-                dark: isDark,
-                colors: isDark ? DarkTheme.colors : DefaultTheme.colors,
+    <OutSideContext.Provider value={outSideContext}>
+      <BirthCtx.Provider value={{list, setList}}>
+        <View style={baseStyle.flex1} onTouchStart={onOutSideTounchStart}>
+          <StatusBar
+            animated
+            barStyle={dark ? 'light-content' : 'dark-content'}
+          />
+          <NavigationContainer
+            ref={navigation}
+            theme={{
+              dark: dark,
+              colors: dark ? DarkTheme.colors : DefaultTheme.colors,
+            }}>
+            <Drawer.Navigator
+              drawerContent={DrawerLayout.DrawerContent}
+              initialRouteName={RouteNames.birth}
+              screenOptions={{
+                headerLeft: DrawerLayout.HeaderLeft,
+                drawerActiveTintColor: theme.color.color,
               }}>
-              <Drawer.Navigator
-                drawerContent={DrawerLayout.DrawerContent}
-                initialRouteName={RouteNames.birth}
-                screenOptions={{
-                  headerLeft: DrawerLayout.HeaderLeft,
-                  drawerActiveTintColor: isDark
-                    ? darkTheme.color.color?.toString()
-                    : defaultTheme.color.color?.toString(),
-                }}>
-                <Drawer.Screen
-                  name={RouteNames.birth}
-                  component={Birth as any}
-                  options={{
-                    title: '生日列表',
-                    drawerIcon: DrawerLayout.DrawerIcon(RouteNames.birth),
-                    headerRight: DrawerLayout.HeaderRight({
-                      onPress() {
-                        navigation.current?.navigate(RouteNames.birthModify);
-                      },
-                    }),
-                  }}
-                />
+              <Drawer.Screen
+                name={RouteNames.birth}
+                component={Birth as any}
+                options={{
+                  title: '生日列表',
+                  drawerIcon: DrawerLayout.DrawerIcon(RouteNames.birth),
+                  headerRight: DrawerLayout.HeaderRight({
+                    onPress() {
+                      navigation.current?.navigate(RouteNames.birthModify);
+                    },
+                  }),
+                }}
+              />
 
-                <Drawer.Screen
-                  name={RouteNames.sets}
-                  component={Sets}
-                  options={{
-                    title: '设置',
-                    drawerIcon: DrawerLayout.DrawerIcon(RouteNames.sets),
-                  }}
-                />
-                <Drawer.Screen
-                  name={RouteNames.birthModify}
-                  component={BirthModify as any}
-                />
-              </Drawer.Navigator>
-            </NavigationContainer>
-          </View>
-        </BirthCtx.Provider>
-      </OutSideContext.Provider>
-    </Theme.Provider>
+              <Drawer.Screen
+                name={RouteNames.sets}
+                component={Sets}
+                options={{
+                  title: '设置',
+                  drawerIcon: DrawerLayout.DrawerIcon(RouteNames.sets),
+                }}
+              />
+              <Drawer.Screen
+                name={RouteNames.birthModify}
+                component={BirthModify as any}
+              />
+            </Drawer.Navigator>
+          </NavigationContainer>
+        </View>
+      </BirthCtx.Provider>
+    </OutSideContext.Provider>
   );
 }
 

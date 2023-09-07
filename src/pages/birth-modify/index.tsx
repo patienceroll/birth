@@ -1,29 +1,21 @@
 import {DrawerScreenProps} from '@react-navigation/drawer';
 import React, {useLayoutEffect, useEffect, useRef} from 'react';
-import {Text, View, TextInput, StyleSheet, Pressable} from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableHighlight,
+  TouchableNativeFeedback,
+  Platform,
+} from 'react-native';
 
 import * as PickDate from 'src/components/pick-date';
-import baseStyle from 'src/base-style';
-import useTheme from 'src/hooks/use-theme';
+import baseStyle from 'src/style/base';
+
 
 import RouteNames from 'src/route';
-
-const style = StyleSheet.create({
-  text: {
-    paddingVertical: 5,
-    borderBottomWidth: 1,
-  },
-  item: {
-    marginBottom: 20,
-  },
-  view: {
-    paddingHorizontal: 20,
-  },
-  label: {
-    lineHeight: 40,
-    paddingRight: 10,
-  },
-});
+import key from 'src/utils/key';
 
 export default function (
   props: DrawerScreenProps<
@@ -32,8 +24,15 @@ export default function (
   >,
 ) {
   const {route, navigation} = props;
-  const theme = useTheme();
   const pickDate = useRef<PickDate.Ref>(null);
+
+  const form = useRef<BirthItem>({
+    id: key.get,
+    name: '',
+    birthType: 'day',
+    birthDay: NaN,
+    birthLunar: NaN,
+  });
 
   useEffect(() => {
     navigation.setOptions({
@@ -41,19 +40,52 @@ export default function (
     });
   }, [navigation, route.params]);
 
+  const Touch = Platform.select({
+    default: TouchableHighlight,
+    android: TouchableNativeFeedback as unknown as typeof TouchableHighlight,
+  });
+
   return (
     <View>
-      <View style={style.view}>
+      <Touch>
+        <View>
+          <View style={[style.label]}>
+            <Text>姓名</Text>
+          </View>
+          <View style={[style.content]}></View>
+        </View>
+      </Touch>
+      {/* <Touch style={style.touch}>
         <View style={[baseStyle.flexDirectionRow, style.item]}>
           <Text style={style.label}>姓名</Text>
-          <TextInput style={[style.text, theme.borderColor, baseStyle.flex1]} />
+          <View style={[style.content, theme.borderColor]}>
+            <TextInput style={[style.textInput, baseStyle.flex1]} />
+          </View>
         </View>
+      </Touch>
+      <Touch
+        style={style.touch}
+        onPress={() => {
+          pickDate.current?.getBirth();
+        }}>
         <View style={[baseStyle.flexDirectionRow, style.item]}>
           <Text style={style.label}>生日</Text>
-          <TextInput style={[style.text, theme.borderColor, baseStyle.flex1]} />
+          <View style={[style.content, theme.borderColor]}>
+            <Text>
+              {Object.is(form.current.birthDay, NaN)
+                ? ''
+                : form.current.birthDay}
+            </Text>
+          </View>
         </View>
-      </View>
+      </Touch> */}
+
       <PickDate.default ref={pickDate} />
     </View>
   );
 }
+
+const style = StyleSheet.create({
+  label: {},
+  content: {},
+});

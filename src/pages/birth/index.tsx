@@ -5,10 +5,10 @@ import {DrawerScreenProps} from '@react-navigation/drawer';
 import List from 'src/components/list';
 import ListAction from 'src/components/list/action';
 import useBirth from 'src/hooks/use-birth';
-import useTheme from 'src/hooks/use-theme';
-import baseStyle from 'src/base-style';
+import baseStyle from 'src/style/base';
 import assets from 'src/assets';
 import RouteNames from 'src/route';
+import theme from 'src/style/theme';
 
 const style = StyleSheet.create({
   action: {width: 20, height: 20},
@@ -23,7 +23,6 @@ export default function (
     keyof typeof RouteNames
   >,
 ) {
-  const theme = useTheme();
   const birth = useBirth();
 
   function onDelete(item: BirthItem) {

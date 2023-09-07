@@ -9,7 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import baseStyle from 'src/base-style';
+import baseStyle from 'src/style/base';
 
 export type ListActionProps = {
   children: ReactElement;

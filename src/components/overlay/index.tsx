@@ -24,10 +24,10 @@ const style = StyleSheet.create({
   },
 });
 
-export default forwardRef<Ref, Omit<ModalProps, 'visible'>>(function (
-  props,
-  ref,
-) {
+export default forwardRef<
+  Ref,
+  Omit<ModalProps, 'visible'> & {onOvlayClose?: () => void}
+>(function (props, ref) {
   const visible = useWhether();
 
   useImperativeHandle(ref, () => ({
@@ -43,7 +43,13 @@ export default forwardRef<Ref, Omit<ModalProps, 'visible'>>(function (
       {...props}>
       <TouchableWithoutFeedback
         style={style.touchableWithoutFeedback}
-        onPress={visible.setFalse}>
+        onPress={() => {
+          if (props.onOvlayClose) {
+            props.onOvlayClose();
+          } else {
+            visible.setFalse();
+          }
+        }}>
         <View style={style.overlayBg}>
           <TouchableWithoutFeedback>{props.children}</TouchableWithoutFeedback>
         </View>

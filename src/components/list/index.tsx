@@ -8,10 +8,10 @@ import {
   GestureResponderEvent,
   PanResponderGestureState,
 } from 'react-native';
-import {ReactElement, useContext, useRef} from 'react';
+import {ReactElement, useRef} from 'react';
 
-import Theme from 'src/context/theme';
 import useOutsidePress from 'src/hooks/use-outside-press';
+import theme from 'src/style/theme';
 
 export type ListProps = {
   children: ReactElement;
@@ -25,7 +25,7 @@ const comStyle = StyleSheet.create({
   ct: {},
   children: {
     width: '100%',
-    zIndex: 1
+    zIndex: 1,
   },
   action: {
     position: 'absolute',
@@ -47,7 +47,6 @@ export default function (props: ListProps) {
   });
   const showAction = useRef(false);
 
-  const theme = useContext(Theme);
   const {onTouchStart, onTouchEnd} = useOutsidePress(() => {
     showAction.current = false;
     Animated.timing(translateX.current, {

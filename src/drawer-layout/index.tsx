@@ -5,7 +5,6 @@ import {
   DrawerContentComponentProps,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {useContext} from 'react';
 import {
   Image,
   ImageSourcePropType,
@@ -23,9 +22,9 @@ import {
   useLinkBuilder,
 } from '@react-navigation/native';
 
-import Theme from 'src/context/theme';
 import assets from 'src/assets';
 import {RouteName} from 'src/route';
+import theme from 'src/style/theme';
 
 const style = StyleSheet.create({
   headerRight: {
@@ -44,7 +43,7 @@ export function HeaderLeft(
   ...arg: Parameters<NonNullable<DrawerNavigationOptions['headerLeft']>>
 ) {
   const [props] = arg;
-  const theme = useContext(Theme);
+
   if (typeof props.tintColor === 'undefined') {
     props.tintColor = theme.color.color?.toString();
   }
