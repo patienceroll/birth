@@ -1,25 +1,31 @@
 import {useRef, forwardRef, useImperativeHandle} from 'react';
-import {View, StyleSheet,Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Platform,
+  TouchableHighlight,
+  TouchableNativeFeedback,
+} from 'react-native';
 import baseStyle from 'src/style/base';
 
 import * as Overlay from 'src/components/overlay';
 import theme from 'src/style/theme';
 import {ScrollView} from 'react-native-gesture-handler';
 
-
 const style = StyleSheet.create({
   view: {
-    flexDirection: 'row',
-    height: 400,
     width: '100%',
-    // backgroundColor: theme.backgroundColor.backgroundColor,
-    backgroundColor: '#fff',
+    backgroundColor: theme.backgroundColor.backgroundColor,
     position: 'absolute',
     bottom: 0,
-
   },
   scrollView: {
     flex: 1,
+  },
+  title: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 });
 
@@ -48,18 +54,34 @@ export default forwardRef<Ref>(function (props, ref) {
       });
     },
   }));
+
+  const Touch = Platform.select({
+    default: TouchableHighlight,
+    android: TouchableNativeFeedback as unknown as typeof TouchableHighlight,
+  });
+
   return (
     <Overlay.default ref={overlay} onOvlayClose={overlay.current?.setFalse}>
       <View style={style.view}>
-        <ScrollView style={style.scrollView}>
-          <Text>123</Text>
-        </ScrollView>
-        <ScrollView style={style.scrollView}>
-          <Text>123</Text>
-        </ScrollView>
-        <ScrollView style={style.scrollView}>
-          <Text>123</Text>
-        </ScrollView>
+        <View style={style.title}>
+          <Touch>
+            <Text>取消</Text>
+          </Touch>
+          <Touch>
+            <Text>确定</Text>
+          </Touch>
+        </View>
+        <View>
+          <ScrollView style={style.scrollView}>
+            <Text>123</Text>
+          </ScrollView>
+          <ScrollView style={style.scrollView}>
+            <Text>123</Text>
+          </ScrollView>
+          <ScrollView style={style.scrollView}>
+            <Text>123</Text>
+          </ScrollView>
+        </View>
       </View>
     </Overlay.default>
   );
