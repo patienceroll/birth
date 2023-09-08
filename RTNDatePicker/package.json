@@ -1,0 +1,43 @@
+{
+  "name": "rtn-datepicker",
+  "version": "0.0.1",
+  "description": "",
+  "react-native": "js/index",
+  "source": "js/index",
+  "files": [
+    "js",
+    "android",
+    "ios",
+    "rtn-datepicker.podspec",
+    "!android/build",
+    "!ios/build",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": "https://github.com/patienceroll/rtn-calculator",
+  "author": "张显磊 1079105171@qq.com (https://github.com/patienceroll)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/patienceroll/rtn-calculator/issues"
+  },
+  "homepage": "https://github.com/patienceroll/rtn-calculator#readme",
+  "devDependencies": {},
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "codegenConfig": {
+    "name": "RTNDatePickerSpec",
+    "type": "modules",
+    "jsSrcsDir": "js",
+    "android": {
+      "javaPackageName": "com.rtndatepicker"
+    }
+  }
+}
