@@ -21,7 +21,8 @@
     "react-native-gesture-handler": "2.9.0",
     "react-native-reanimated": "^3.4.2",
     "react-native-safe-area-context": "^4.7.1",
-    "react-native-screens": "^3.24.0"
+    "react-native-screens": "^3.24.0",
+    "rtn-native-date-picker": "./turbo-modules/rtn-native-date-picker"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -5,7 +5,7 @@ import {
   DarkTheme,
   NavigationContainerRef,
 } from '@react-navigation/native';
-import React, {useContext, Suspense, useState, useRef} from 'react';
+import React, {useContext, Suspense, useState, useRef, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
@@ -21,6 +21,8 @@ import Sets from 'src/pages/sets';
 import BirthModify from 'src/pages/birth-modify';
 import theme from 'src/style/theme';
 import isDark from 'src/utils/is-dark';
+
+import NativeDatePicker from 'rtn-native-date-picker/js';
 
 const Drawer = createDrawerNavigator();
 
@@ -44,6 +46,10 @@ function App(props: {list: BirthItem[]}) {
       }
     });
   }
+
+  useEffect(() => {
+    NativeDatePicker?.show();
+  }, []);
 
   return (
     <OutSideContext.Provider value={outSideContext}>
