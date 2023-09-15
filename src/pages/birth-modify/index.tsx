@@ -50,7 +50,7 @@ export default function (
       <Touch>
         <View style={style.item}>
           <View style={[style.label]}>
-            <Text style={style.labelText}>姓名</Text>
+            <Text style={[style.labelText, theme.color]}>姓名</Text>
           </View>
           <View style={[style.content]}>
             <TextInput
@@ -71,7 +71,7 @@ export default function (
         }}>
         <View style={style.item}>
           <View style={[style.label]}>
-            <Text style={style.labelText}>生日</Text>
+            <Text style={[style.labelText, theme.color]}>生日</Text>
           </View>
           <View style={[style.content]}>
             <View style={style.textContent}>

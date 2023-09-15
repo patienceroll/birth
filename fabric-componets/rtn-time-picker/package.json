@@ -1,14 +1,14 @@
 {
-  "name": "rtn-native-date-picker",
+  "name": "rtn-time-picker",
   "version": "0.0.1",
-  "description": "Add numbers with TurboModules",
+  "description": "在 React Native 使用原生时间选择器",
   "react-native": "js/index",
   "source": "js/index",
   "files": [
     "js",
     "android",
     "ios",
-    "rtn-native-date-picker.podspec",
+    "rtn-time-picker.podspec",
     "!android/build",
     "!ios/build",
     "!**/__tests__",
@@ -20,24 +20,21 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/<your_github_handle>/rtn-native-date-picker",
+  "repository": "https://github.com/<your_github_handle>/rtn-time-picker",
   "author": "<Your Name> <your_email@your_provider.com> (https://github.com/<your_github_handle>)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/<your_github_handle>/rtn-native-date-picker/issues"
+    "url": "https://github.com/<your_github_handle>/rtn-time-picker/issues"
   },
-  "homepage": "https://github.com/<your_github_handle>/rtn-native-date-picker#readme",
+  "homepage": "https://github.com/<your_github_handle>/rtn-time-picker#readme",
   "devDependencies": {},
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "codegenConfig": {
-    "name": "RTNNativeDatePickerSpec",
-    "type": "modules",
-    "jsSrcsDir": "js",
-    "android": {
-      "javaPackageName": "com.rtnnativedatepicker"
-    }
+    "name": "RTNTimePickerSpecs",
+    "type": "components",
+    "jsSrcsDir": "js"
   }
 }

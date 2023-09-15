@@ -25,7 +25,7 @@ const style = StyleSheet.create({
   },
   title: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
 });
 

@@ -22,7 +22,8 @@ import BirthModify from 'src/pages/birth-modify';
 import theme from 'src/style/theme';
 import isDark from 'src/utils/is-dark';
 
-import NativeDatePicker from 'rtn-native-date-picker/js';
+import NativeDatePicker from 'rtn-native-date-picker/js/NativeDatePicker';
+import TimerPicker from 'rtn-time-picker/js/TimePickerNativeComponent';
 
 const Drawer = createDrawerNavigator();
 
@@ -48,7 +49,8 @@ function App(props: {list: BirthItem[]}) {
   }
 
   useEffect(() => {
-    NativeDatePicker?.show();
+    console.log(NativeDatePicker);
+    console.log(TimerPicker);
   }, []);
 
   return (
