@@ -1,5 +1,5 @@
 import {DrawerScreenProps} from '@react-navigation/drawer';
-import React, {useLayoutEffect, useEffect, useRef} from 'react';
+import React, {useRef, useLayoutEffect} from 'react';
 import {
   Text,
   View,
@@ -16,6 +16,8 @@ import baseStyle from 'src/style/base';
 import RouteNames from 'src/route';
 import key from 'src/utils/key';
 import theme from 'src/style/theme';
+import useInitRun from 'src/hooks/use-init-run';
+import * as RTNTimerPicker from 'rtn-time-picker/js/TimePickerNativeComponent';
 
 export default function (
   props: DrawerScreenProps<
@@ -34,7 +36,7 @@ export default function (
     birthLunar: NaN,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: route.params ? '编辑生日' : '新增生日',
     });
@@ -85,12 +87,15 @@ export default function (
           </View>
         </View>
       </Touch>
-      <PickDate.default ref={pickDate} />
+      <RTNTimerPicker.default style={style.timer} />
     </View>
   );
 }
 
 const style = StyleSheet.create({
+  timer: {
+    height: '100%',
+  },
   item: {
     flexDirection: 'row',
   },

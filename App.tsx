@@ -5,7 +5,7 @@ import {
   DarkTheme,
   NavigationContainerRef,
 } from '@react-navigation/native';
-import React, {useContext, Suspense, useState, useRef, useEffect} from 'react';
+import React, {useContext, Suspense, useState, useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
@@ -21,9 +21,6 @@ import Sets from 'src/pages/sets';
 import BirthModify from 'src/pages/birth-modify';
 import theme from 'src/style/theme';
 import isDark from 'src/utils/is-dark';
-
-import NativeDatePicker from 'rtn-native-date-picker/js/NativeDatePicker';
-import TimerPicker from 'rtn-time-picker/js/TimePickerNativeComponent';
 
 const Drawer = createDrawerNavigator();
 
@@ -48,11 +45,6 @@ function App(props: {list: BirthItem[]}) {
     });
   }
 
-  useEffect(() => {
-    console.log(NativeDatePicker);
-    console.log(TimerPicker);
-  }, []);
-
   return (
     <OutSideContext.Provider value={outSideContext}>
       <BirthCtx.Provider value={{list, setList}}>
@@ -69,7 +61,7 @@ function App(props: {list: BirthItem[]}) {
             }}>
             <Drawer.Navigator
               drawerContent={DrawerLayout.DrawerContent}
-              initialRouteName={RouteNames.birth}
+              initialRouteName={RouteNames.birthModify}
               screenOptions={{
                 headerLeft: DrawerLayout.HeaderLeft,
                 drawerActiveTintColor: theme.color.color,

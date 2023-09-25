@@ -3,11 +3,10 @@ package com.rtntimepicker;
 import androidx.annotation.Nullable;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.graphics.Color;
+import android.widget.DatePicker;
 
 
-
-public class RTNTimePicker extends android.widget.TimePicker {
+public class RTNTimePicker extends DatePicker {
 
     public RTNTimePicker(Context context) {
         super(context);
@@ -25,6 +24,6 @@ public class RTNTimePicker extends android.widget.TimePicker {
     }
 
     private void configureComponent() {
-        this.setBackgroundColor(Color.RED);
+        this.setSpinnersShown(true);
     }
 }
