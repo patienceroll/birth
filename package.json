@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "build": "cd android && gradlew assembleRelease",
-    "dev:tool": "yarn react-devtools"
+    "dev:tool": "yarn react-devtools",
+    "gen": "cd android && ./gradlew generateCodegenArtifactsFromSchema"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.3",

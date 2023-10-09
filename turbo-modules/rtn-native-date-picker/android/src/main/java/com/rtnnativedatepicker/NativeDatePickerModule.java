@@ -25,6 +25,6 @@ public class NativeDatePickerModule extends NativeDatePickerSpec {
     }
 
     @Override
-    public void show() {
+    public void show(ReadableMap options) {
     }
 }
