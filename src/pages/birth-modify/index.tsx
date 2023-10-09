@@ -9,6 +9,7 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
+import DatePickerDialog from 'rtn-native-date-picker/js';
 
 import * as PickDate from 'src/components/pick-date';
 import baseStyle from 'src/style/base';
@@ -16,7 +17,6 @@ import baseStyle from 'src/style/base';
 import RouteNames from 'src/route';
 import key from 'src/utils/key';
 import theme from 'src/style/theme';
-import DatePickerDialg from 'rtn-native-date-picker';
 
 export default function (
   props: DrawerScreenProps<
@@ -68,6 +68,9 @@ export default function (
         onPress={() => {
           pickDate.current?.getBirth().then(birth => {
             form.current.birthType = birth.type;
+          });
+          DatePickerDialog?.show({themeResId: 2, year: 2000}).then(res => {
+            console.log(res);
           });
         }}>
         <View style={style.item}>
