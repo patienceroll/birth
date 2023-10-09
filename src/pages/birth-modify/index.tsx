@@ -16,8 +16,7 @@ import baseStyle from 'src/style/base';
 import RouteNames from 'src/route';
 import key from 'src/utils/key';
 import theme from 'src/style/theme';
-import useInitRun from 'src/hooks/use-init-run';
-import * as RTNTimerPicker from 'rtn-time-picker/js/TimePickerNativeComponent';
+import DatePickerDialg from 'rtn-native-date-picker';
 
 export default function (
   props: DrawerScreenProps<
@@ -87,7 +86,6 @@ export default function (
           </View>
         </View>
       </Touch>
-      <RTNTimerPicker.default style={style.timer} />
     </View>
   );
 }

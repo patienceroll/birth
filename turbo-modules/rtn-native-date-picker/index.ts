@@ -1,3 +1,7 @@
-import * as all from './js/NativeDatePicker';
+import _default from './js/NativeDatePicker';
 
-export default all;
+import {Spec} from './js/NativeDatePicker';
+
+export {Spec};
+
+export default _default;
