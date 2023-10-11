@@ -10,13 +10,12 @@ import {
   Platform,
 } from 'react-native';
 import DatePickerDialog from 'rtn-native-date-picker/js';
-
-import * as PickDate from 'src/components/pick-date';
-import baseStyle from 'src/style/base';
+import moment from 'moment';
 
 import RouteNames from 'src/route';
 import key from 'src/utils/key';
 import theme from 'src/style/theme';
+import useWhether from 'src/hooks/use-whether';
 
 export default function (
   props: DrawerScreenProps<
@@ -25,7 +24,6 @@ export default function (
   >,
 ) {
   const {route, navigation} = props;
-  const pickDate = useRef<PickDate.Ref>(null);
 
   const form = useRef<BirthItem>({
     id: key.get,
@@ -34,6 +32,7 @@ export default function (
     birthDay: NaN,
     birthLunar: NaN,
   });
+  const {toggle} = useWhether();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -66,11 +65,11 @@ export default function (
       </Touch>
       <Touch
         onPress={() => {
-          pickDate.current?.getBirth().then(birth => {
-            form.current.birthType = birth.type;
-          });
-          DatePickerDialog?.show({themeResId: 2, year: 2000}).then(res => {
-            console.log(res);
+          DatePickerDialog?.show({themeResId: 2}).then(res => {
+            form.current.birthDay = moment(
+              `${res.year}-${res.month}-${res.day}`,
+            ).valueOf();
+            toggle();
           });
         }}>
         <View style={style.item}>

@@ -13,5 +13,8 @@ export default function (defaultValue?: boolean) {
     setFalse: useCallback(() => {
       setWhether(false);
     }, []),
+    toggle: useCallback(() => {
+      setWhether(t => !t);
+    },[])
   };
 }
